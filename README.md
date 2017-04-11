@@ -7,6 +7,10 @@ Simply place an `<img>` tag somewhere, write a GLSL shader for it and connect th
 
 Here`s a demo: https://wearekiss.com/preview/shaderboy/test.html
 
+## Changelog
+
+- __Version 1.1__: Now passing mouse-related data to the shaders
+
 ## Basic usage
 
 First, download `shaderboy.js` or `shaderboy.min.js` and load it in your html document.
@@ -84,6 +88,10 @@ uniform sampler2D texture1;
 # ... up to texture5
 uniform float time;
 varying vec2 pixelCoords;
+
+uniform vec2 mouseCoords;
+uniform int mouseDownLeft;
+uniform int mouseDownRight;
 ````
 
 The original images data is provided as a texture named `image`, all additionally loaded texures
@@ -91,6 +99,12 @@ can be accessed through `texture0` to `texture5`.
 
 Together with the image data, shaderboy will pass a `time` variable to enable you to change your shaders appearance
 over time, as well as a vector named `pixelCoords` that contains the coordinates of the currently rendered pixel.
+
+Mouse data has been added in version 1.1 - you can grab a vec2 with `mouseCoords` that
+are already mapped to the WebGL coordinates space (x from 0 to 1, y from 1 to 0).
+
+The uniforms `mouseDownLeft` and `mouseDownRight` are either 0 or 1 - depending on if one of those
+mouse buttons have been pressed.
 
 ## How the hell do I write GLSL shaders?
 

@@ -3,8 +3,9 @@
  * =========
  *
  * @author Christian Engel <hello@wearekiss.com>
+ * @url https://github.com/Paratron/shaderboy
  * @license MIT
- * @version 1
+ * @version 1.1
  */
 (function () {
     'use strict';
@@ -17,7 +18,8 @@
     shaderboy['fragmentShaders'] = {};
     shaderboy['defaultVertexShader'] = 'attribute vec2 position;varying vec2 pixelCoords;\nvoid main() {\ngl_Position = vec4(vec2(position * vec2(2,2)) - vec2(1,1), 0., 1.);\npixelCoords=position;}';
     shaderboy['defaultVertex'] = [1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0];
-    shaderboy['onerror'] = function(){};
+    shaderboy['onerror'] = function () {
+    };
 
     var gl,
         loaders = {},
@@ -160,6 +162,26 @@
         return shader;
     }
 
+    function getOffsetLeft(elm) {
+        var offsetLeft = 0;
+        do {
+            if (!isNaN(elm.offsetLeft)) {
+                offsetLeft += elm.offsetLeft;
+            }
+        } while (elm = elm.offsetParent);
+        return offsetLeft;
+    }
+
+    function getOffsetTop(elm) {
+        var offsetTop = 0;
+        do {
+            if (!isNaN(elm.offsetTop)) {
+                offsetTop += elm.offsetTop;
+            }
+        } while (elm = elm.offsetParent);
+        return offsetTop;
+    }
+
     /**
      * This creates a webgl program and compiles and links all the needed shaders.
      * @param gl
@@ -224,7 +246,15 @@
             program: program,
             renderStart: Date.now(),
             textures: [],
+            mouseX: -1,
+            mouseY: -1,
+            mouseL: 0,
+            mouseR: 0,
             uniforms: {
+                viewport: gl.getUniformLocation(program, 'viewport'),
+                mouseCoords: gl.getUniformLocation(program, 'mouseCoords'),
+                mouseDownLeft: gl.getUniformLocation(program, 'mouseDownLeft'),
+                mouseDownRight: gl.getUniformLocation(program, 'mouseDownRight'),
                 time: gl.getUniformLocation(program, 'time'),
                 image: gl.getUniformLocation(program, 'image'),
                 texture0: gl.getUniformLocation(program, 'texture0'),
@@ -239,6 +269,30 @@
                 vertexes: initBuffers(gl)
             }
         };
+
+        inCanvasElement.addEventListener('mousedown', function (e) {
+            store[sbId].mouseL = e.button === 0 ? 1 : 0;
+            store[sbId].mouseR = e.button === 2 ? 1 : 0;
+        });
+
+        inCanvasElement.addEventListener('mouseup', function (e) {
+            if(e.button === 0){
+                store[sbId].mouseL = 0;
+            }
+            if(e.button === 2){
+                store[sbId].mouseR = 0;
+            }
+        });
+
+        inCanvasElement.addEventListener('mousemove', function (e) {
+            store[sbId].mouseX = e.clientX - getOffsetLeft(e.target) + document.body.scrollLeft;
+            store[sbId].mouseY = e.clientY - getOffsetTop(e.target) + document.body.scrollTop;
+        });
+
+        inCanvasElement.addEventListener('mouseout', function (e) {
+            store[sbId].mouseX = store[sbId].mouseY = -1;
+            store[sbId].mouseL = store[sbId].mouseR = 0;
+        });
 
         gl.enableVertexAttribArray(vertexPosition);
 
@@ -290,6 +344,14 @@
         gl.clear(gl.COLOR_BUFFER_BIT);
         //if (!currentProgram)
         //    return;
+        gl.uniform2i(inStore.uniforms.viewport, canvas.width, canvas.height);
+        if (inStore.mouseX !== -1) {
+            gl.uniform2f(inStore.uniforms.mouseCoords, inStore.mouseX / canvas.width, 1 - (inStore.mouseY / canvas.height));
+        } else {
+            gl.uniform2f(inStore.uniforms.mouseCoords, -1, -1);
+        }
+        gl.uniform1i(inStore.uniforms.mouseDownLeft, inStore.mouseL);
+        gl.uniform1i(inStore.uniforms.mouseDownRight, inStore.mouseR);
         gl.uniform1i(inStore.uniforms.image, 0);
         gl.uniform1f(inStore.uniforms.time, (Date.now() - inStore.renderStart) / 1000);
 
@@ -420,11 +482,11 @@
         replaceElement(domElement, keepOriginal, callback);
     };
 
-    window.addEventListener('resize', function(){
+    window.addEventListener('resize', function () {
         clearTimeout(resizeTimeout);
-        resizeTimeout = setTimeout(function(){
+        resizeTimeout = setTimeout(function () {
             var canvases = shaderboy['canvases'];
-            for(var i = 0; i < canvases.length; i++){
+            for (var i = 0; i < canvases.length; i++) {
                 setSize(canvases[i], canvases[i]);
             }
         }, 100);
