@@ -92,6 +92,13 @@ can be accessed through `texture0` to `texture5`.
 Together with the image data, shaderboy will pass a `time` variable to enable you to change your shaders appearance
 over time, as well as a vector named `pixelCoords` that contains the coordinates of the currently rendered pixel.
 
+## How the hell do I write GLSL shaders?
 
+Well, there are a lot of books out there that help you learn "GLSL es" - the version of GLSL that is used
+by WebGL.
 
+If you want to have a free introduction into the topic, I recommend [The book of shaders](https://thebookofshaders.com/) - I also recommend you to donate something to the author,
+because he had a lot of work creating this great book!
+
+Have fun with shaderboy - and don't forget to share your creations with me :)
 
