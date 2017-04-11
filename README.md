@@ -12,7 +12,7 @@ Here`s a demo: https://wearekiss.com/preview/shaderboy/test.html
 First, download `shaderboy.js` or `shaderboy.min.js` and load it in your html document.
  
 ````javascript
- <script src="shaderboy.min.js"></script>
+<script src="shaderboy.min.js"></script>
 ````
 
 You need to write a GLSL shader to manipulate the pixeldata of your images. You can either store your shader(s) in 
@@ -24,7 +24,7 @@ to your `<img>` elements.
 The easiest way to attach a GLSL shader to an `<img>` element is this:
 
 ````html
-	<img src="myimage.jpg" alt="My cool animation" data-shader="myshader.glsl" />
+<img src="myimage.jpg" alt="My cool animation" data-shader="myshader.glsl" />
 ````
 
 Shaderboy will try to load the file `./myshader.glsl` via AJAX and will start to animate the image as soon as it has been loaded.
@@ -33,10 +33,10 @@ If you have embedded your shader directly into the HTML document, you need to ap
 shaderboy to use the shader with the given id:
 
 ````html
-	<script type="text/glsl" id="myshader">
-		// SHADER DATA
-	</script>
-	<img src="myimage.jpg" alt="My cool animation" data-shader="#myshader" />
+<script type="text/glsl" id="myshader">
+	// SHADER DATA
+</script>
+<img src="myimage.jpg" alt="My cool animation" data-shader="#myshader" />
 ````
 
 The `#` symbol tells shaderboy that `data-shader` should be treated as an id reference rather than a url.
@@ -56,13 +56,13 @@ complicated effects. Shaderboy allows you as well to load multiple textures to b
 animate _one_ image tag. Define them like so:
 
 ````html
-	<img
-		src="myimage.jpg"
-		alt="My cool animation"
-		data-shader="myshader.glsl"
-		data-texture0="a-texture.jpg"
-		data-texture1="mymask.png"
-	 />
+<img
+	src="myimage.jpg"
+	alt="My cool animation"
+	data-shader="myshader.glsl"
+	data-texture0="a-texture.jpg"
+	data-texture1="mymask.png"
+ />
 ````
 
 Currently, shaderboy allows you to load up to 6 additional texures (together with your original images data)
