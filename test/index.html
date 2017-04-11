@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Shaderboy Test</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            background: #476885;
+            text-align: center;
+            color: #ddd;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        a{
+            color: #fff;
+        }
+
+        .shadedImage {
+            display: block;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+<h1>Shaderboy Test</h1>
+
+<p>Simply place an &lt;img&gt; tag somewhere, write <a href="lib/shaders/shader1.glsl">a GLSL shader</a> for it and poof:</p>
+
+<img
+    class="shadedImage"
+    src="img/car.jpg"
+    data-shader="shader.glsl"
+    data-texture0="img/carMask.png"
+    data-texture1="img/smoke.jpg"
+>
+
+<script src="../shaderboy.min.js"></script>
+
+<script>
+    shaderboy.autoReplace();
+</script>
+</body>
+</html>
