@@ -9,14 +9,15 @@
 (function () {
     'use strict';
 
-    var shaderboy = window.shaderboy = {
-        canvases: [],
-        fragmentShaders: {},
-        defaultVertexShader: 'attribute vec2 position;varying vec2 pixelCoords;\nvoid main() {\ngl_Position = vec4(vec2(position * vec2(2,2)) - vec2(1,1), 0., 1.);\npixelCoords=position;}',
-        defaultVertex: [1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0],
-        onerror: function () {
-        }
-    };
+    var shaderboy;
+
+    window['shaderboy'] = shaderboy = {};
+
+    shaderboy['canvases'] = [];
+    shaderboy['fragmentShaders'] = {};
+    shaderboy['defaultVertexShader'] = 'attribute vec2 position;varying vec2 pixelCoords;\nvoid main() {\ngl_Position = vec4(vec2(position * vec2(2,2)) - vec2(1,1), 0., 1.);\npixelCoords=position;}';
+    shaderboy['defaultVertex'] = [1, 1, 0, -1, 1, 0, 1, -1, 0, -1, -1, 0];
+    shaderboy['onerror'] = function(){};
 
     var gl,
         loaders = {},
